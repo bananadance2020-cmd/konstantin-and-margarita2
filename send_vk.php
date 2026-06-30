@@ -14,7 +14,7 @@ $vk_user_id = 'ВАШ_ID_ВК';
 // ==========================================
 // НАСТРОЙКИ БОТА (не трогать)
 // ==========================================
-$vk_token = 'ВАШ_ЦЕНТРАЛЬНЫЙ_ТОКЕН'; // Токен вашей единой группы ВК
+$vk_token = 'vk1.a.GZqjYnIiyHtMKq7UfWz3-SzU5KabyxA40z0cu-FHiQ7_wxHTl5rSXRwm0IcLR2gk0ebpDhmZNsoIcDTIvMAcHJL1EOAJB87HSIjUdqpmdO7_BK2UR5wNfVHI1D2EmcSJs-Q_tolKJI41OwPubAGcyUc5HGcRewdp8kq0fD67OvxsW4PC4ICijUiolvzRZPdluCT1jKsEMn0AbGI3VbPEXQ'; // Токен вашей единой группы ВК
 // ==========================================
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

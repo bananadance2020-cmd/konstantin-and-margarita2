@@ -1,8 +1,8 @@
 <?php
 
 // Данные вашего центрального бота (настройте их после создания группы)
-$confirmation_token = 'ВАШ_КОД_ПОДТВЕРЖДЕНИЯ'; // Строка, которую нужно вернуть серверу ВК
-$vk_token = 'ВАШ_ЦЕНТРАЛЬНЫЙ_ТОКЕН';         // Токен группы для отправки сообщений
+$confirmation_token = 'af39953e'; // Строка, которую нужно вернуть серверу ВК
+$vk_token = 'vk1.a.GZqjYnIiyHtMKq7UfWz3-SzU5KabyxA40z0cu-FHiQ7_wxHTl5rSXRwm0IcLR2gk0ebpDhmZNsoIcDTIvMAcHJL1EOAJB87HSIjUdqpmdO7_BK2UR5wNfVHI1D2EmcSJs-Q_tolKJI41OwPubAGcyUc5HGcRewdp8kq0fD67OvxsW4PC4ICijUiolvzRZPdluCT1jKsEMn0AbGI3VbPEXQ';         // Токен группы для отправки сообщений
 
 // Получаем и декодируем JSON-данные от ВКонтакте
 $data = json_decode(file_get_contents('php://input'));
