@@ -25,7 +25,11 @@ $vk_token = 'vk1.a.GZqjYnIiyHtMKq7UfWz3-SzU5KabyxA40z0cu-FHiQ7_wxHTl5rSXRwm0IcLR
 // ==========================================
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $messageText = "🔔 Новая анкета гостя!\n\n";
+    // Получаем имя сайта, с которого пришла заявка
+    $site_name = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'вашего сайта';
+
+    // Формируем текст сообщения
+    $messageText = "🔔 Новая анкета с сайта {$site_name}!\n\n";
 
     // Собираем все поля из формы
     foreach ($_POST as $key => $value) {
