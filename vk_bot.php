@@ -55,6 +55,8 @@ switch ($data->type) {
                 $response_data = json_decode($response, true);
                 if ($response_data && isset($response_data['status']) && $response_data['status'] === 'success') {
                     $message_text = "✅ Отлично! Ваш сайт {$url} успешно привязан.\nТеперь все заполненные анкеты будут приходить вам сюда!";
+                } elseif ($response_data && isset($response_data['message']) && $response_data['message'] === 'already_bound') {
+                    $message_text = "❌ Этот сайт уже привязан к другому пользователю! Если это ошибка, обратитесь к разработчику.";
                 } else {
                     $message_text = "❌ Сайт ответил, но возникла ошибка при сохранении (Неверный ключ или нет прав на запись).";
                 }
