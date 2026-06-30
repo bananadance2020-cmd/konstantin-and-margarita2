@@ -162,8 +162,7 @@ if (file_exists($config_file)) {
     <div class="step">
         <h3>Шаг 1: Узнайте свой ID</h3>
         <p>Чтобы анкеты приходили вам в личные сообщения, напишите нашему боту любое слово (например, "Привет"). Он моментально пришлет вам ваш ID.</p>
-        <a href="https://vk.com/im?media=&sel=-228945638" target="_blank" class="btn-vk">Перейти к боту ВК</a>
-        <!-- ПРИМЕЧАНИЕ ДЛЯ ВАС: замените ссылку выше на ссылку вашей группы -->
+        <a href="https://vk.com/im?media=&sel=-239945231" target="_blank" class="btn-vk">Перейти к боту ВК</a>
     </div>
 
     <div class="step">
