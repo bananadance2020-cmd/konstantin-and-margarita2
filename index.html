@@ -198,7 +198,7 @@ document.addEventListener('click', function(e) {
     }
 }, true); // 'true' включает перехват на стадии погружения (Capture Phase)! Это убивает скрипты Тильды.
 
-// Превращаем радио-кнопки "Предпочтение по напиткам:" в чекбоксы для множественного выбора
+// Превращаем радио-кнопки "Предпочтение по напиткам:" в чекбоксы для множественного выбора (оставляя дизайн кружочков)
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         // Ищем все инпуты радио-кнопок
@@ -206,28 +206,13 @@ document.addEventListener('DOMContentLoaded', function() {
         radios.forEach(function(radio) {
             // Если имя поля содержит слово "напиткам"
             if (radio.name && radio.name.toLowerCase().indexOf('напитк') !== -1) {
-                // Делаем его чекбоксом
+                // Делаем его чекбоксом, чтобы можно было выбрать несколько
                 radio.type = 'checkbox';
                 // Добавляем [] к имени, чтобы PHP принял это как массив
                 if (radio.name.indexOf('[]') === -1) {
                     radio.name = radio.name + '[]';
                 }
-                
-                // Чтобы кружочки стали квадратиками (стиль чекбоксов Тильды)
-                radio.classList.remove('t-radio');
-                radio.classList.add('t-checkbox');
-                
-                var indicator = radio.nextElementSibling;
-                if (indicator && indicator.classList.contains('t-radio__indicator')) {
-                    indicator.classList.remove('t-radio__indicator');
-                    indicator.classList.add('t-checkbox__indicator');
-                }
-                
-                var label = radio.closest('.t-radio__control');
-                if (label) {
-                    label.classList.remove('t-radio__control');
-                    label.classList.add('t-checkbox__control');
-                }
+                // Мы специально НЕ меняем классы CSS, чтобы они оставались кружочками и не ломали верстку!
             }
         });
     }, 1500); // Ждем, пока Тильда отрендерит форму
