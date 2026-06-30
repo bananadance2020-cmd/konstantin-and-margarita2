@@ -160,4 +160,48 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+// Перехватываем формы Tilda для прямой отправки в ВК
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        var forms = document.querySelectorAll('form');
+        forms.forEach(function(form) {
+            // Клонируем форму, чтобы сбросить встроенные скрипты Tilda
+            var newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            
+            newForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Изменяем текст кнопки на "Отправляется..."
+                var btn = newForm.querySelector('button[type="submit"]');
+                var originalText = btn ? btn.innerHTML : 'Отправить';
+                if (btn) btn.innerHTML = 'Отправляется...';
+                
+                var formData = new FormData(newForm);
+                
+                fetch('send_vk.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        // Успех
+                        alert('Спасибо! Ваша анкета успешно отправлена.');
+                        newForm.reset();
+                    } else {
+                        alert('Произошла ошибка. Пожалуйста, попробуйте еще раз.');
+                    }
+                })
+                .catch(function(error) {
+                    alert('Произошла ошибка связи с сервером.');
+                })
+                .finally(function() {
+                    if (btn) btn.innerHTML = originalText;
+                });
+            });
+        });
+    }, 1500); // Ждем 1.5 секунды, пока Tilda сгенерирует формы из JSON
+});
+</script>
 </body> </html>
