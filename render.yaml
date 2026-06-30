@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: konstantin-and-margarita
+    env: docker
+    plan: free
