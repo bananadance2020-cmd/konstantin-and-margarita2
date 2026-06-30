@@ -17,7 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Сохраняем
         if (file_put_contents($config_file, json_encode($config_data, JSON_PRETTY_PRINT))) {
-            $message = '<div class="success">✅ Настройки успешно сохранены! Теперь анкеты будут приходить вам ВКонтакте.</div>';
+            $message = '
+            <div class="success">
+                <p>✅ Настройки успешно сохранены! Теперь анкеты будут приходить вам ВКонтакте.</p>
+                <a href="/" class="btn-vk" style="background: #2e7d32; display: block; text-align: center; margin-top: 15px;">Перейти на ваш сайт</a>
+            </div>';
         } else {
             $message = '<div class="error">❌ Ошибка при сохранении настроек. Проверьте права на запись файла vk_config.json</div>';
         }
