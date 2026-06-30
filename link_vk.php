@@ -31,12 +31,6 @@ if (file_exists($config_file)) {
     $config_data = json_decode(file_get_contents($config_file), true) ?: [];
 }
 
-// ЗАЩИТА: Если сайт уже привязан, не даем перезаписать
-if (!empty($config_data['vk_user_id'])) {
-    echo json_encode(['status' => 'error', 'message' => 'already_bound']);
-    exit;
-}
-
 $config_data['vk_user_id'] = $vk_user_id;
 
 if (file_put_contents($config_file, json_encode($config_data, JSON_PRETTY_PRINT))) {
