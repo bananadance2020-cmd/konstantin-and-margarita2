@@ -23,11 +23,48 @@ switch ($data->type) {
         
     // Получение нового сообщения
     case 'message_new':
-        // Извлекаем ID пользователя, который написал боту
+        // Извлекаем ID и текст сообщения
         $user_id = $data->object->message->from_id;
+        $text = $data->object->message->text;
         
-        // Формируем текст ответа
-        $message_text = "Привет! 👋\n\nТвой личный ID ВКонтакте: {$user_id}\n\nСкопируй эти цифры и вставь их в настройки анкеты на сайте. После этого все заявки будут приходить прямо в этот диалог!";
+        $secret_link_key = 'super_secret_wedding_key_2024';
+        
+        // Проверяем, содержит ли сообщение ссылку
+        if (preg_match('/(https?:\/\/[^\s]+)/i', $text, $matches)) {
+            $url = rtrim($matches[1], '/'); // Удаляем слеш на конце если есть
+            $target_endpoint = $url . '/link_vk.php';
+            
+            // Отправляем POST запрос на сайт клиента
+            $post_data = json_encode([
+                'secret_key' => $secret_link_key,
+                'user_id' => $user_id
+            ]);
+            
+            $ch = curl_init($target_endpoint);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5); // Ждем максимум 5 секунд
+            $response = curl_exec($ch);
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            
+            // Анализируем ответ от сайта
+            if ($http_code == 200) {
+                $response_data = json_decode($response, true);
+                if ($response_data && isset($response_data['status']) && $response_data['status'] === 'success') {
+                    $message_text = "✅ Отлично! Ваш сайт {$url} успешно привязан.\nТеперь все заполненные анкеты будут приходить вам сюда!";
+                } else {
+                    $message_text = "❌ Сайт ответил, но возникла ошибка при сохранении (Неверный ключ или нет прав на запись).";
+                }
+            } else {
+                $message_text = "❌ Не удалось связаться с сайтом {$url} (Ошибка {$http_code}). Убедитесь, что ссылка верная и сайт работает.";
+            }
+        } else {
+            // Если ссылки нет, отправляем инструкцию
+            $message_text = "Привет! 👋\n\nЧтобы получать анкеты гостей сюда, просто отправьте мне ссылку на ваш готовый сайт!\n\nНапример:\nhttps://ivan-i-maria.ru";
+        }
         
         // Отправляем сообщение обратно пользователю
         $request_params = array(
@@ -39,7 +76,10 @@ switch ($data->type) {
         );
         
         $get_params = http_build_query($request_params);
-        file_get_contents('https://api.vk.com/method/messages.send?' . $get_params);
+        $result = @file_get_contents('https://api.vk.com/method/messages.send?' . $get_params);
+        
+        // Логируем ответ для отладки
+        file_put_contents('bot_log.txt', date('Y-m-d H:i:s') . " | User: $user_id | Response: $result\n", FILE_APPEND);
         
         // Возвращаем "ok", чтобы сервер ВКонтакте понял, что сообщение обработано
         echo 'ok';
@@ -47,8 +87,14 @@ switch ($data->type) {
         
     default:
         // Для всех остальных событий просто возвращаем "ok"
+        file_put_contents('bot_log.txt', date('Y-m-d H:i:s') . " | Other event: " . $data->type . "\n", FILE_APPEND);
         echo 'ok';
         break;
+}
+
+// Запишем весь входящий JSON если это сообщение (на случай, если структура другая)
+if (isset($data->type) && $data->type === 'message_new') {
+    file_put_contents('bot_log.txt', date('Y-m-d H:i:s') . " | INCOMING: " . file_get_contents('php://input') . "\n", FILE_APPEND);
 }
 
 ?>
