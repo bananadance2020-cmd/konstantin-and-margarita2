@@ -8,8 +8,15 @@ header('Content-Type: application/json; charset=utf-8');
 // НАСТРОЙКИ (заполняет клиент)
 // ==========================================
 
-// Сюда клиент должен вписать свой ID, который ему выдал бот
-$vk_user_id = 'ВАШ_ID_ВК'; 
+// Читаем ID клиента из конфигурационного файла
+$config_file = __DIR__ . '/vk_config.json';
+$vk_user_id = '';
+if (file_exists($config_file)) {
+    $config_data = json_decode(file_get_contents($config_file), true);
+    if (isset($config_data['vk_user_id'])) {
+        $vk_user_id = $config_data['vk_user_id'];
+    }
+}
 
 // ==========================================
 // НАСТРОЙКИ БОТА (не трогать)
